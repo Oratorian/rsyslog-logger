@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 Documentation
+    url: https://github.com/Oratorian/rsyslog-logger/blob/main/README.md
+    about: Check the comprehensive README for usage examples and configuration options
+  - name: 💬 Discussions
+    url: https://github.com/Oratorian/rsyslog-logger/discussions
+    about: Ask questions, share ideas, or discuss the project with the community
+  - name: 🔍 PyPI Package
+    url: https://pypi.org/project/rsyslog-logger/
+    about: View the package page on PyPI for installation and version information

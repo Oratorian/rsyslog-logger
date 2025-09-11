@@ -1,0 +1,96 @@
+name: 🤝 Support Question
+description: Get help with using rsyslog-logger
+title: "[SUPPORT] "
+labels: ["question", "support"]
+assignees:
+  - Oratorian
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Need help using rsyslog-logger? Please provide details about what you're trying to achieve.
+
+        **Before submitting:** Please check the [README](https://github.com/Oratorian/rsyslog-logger#readme) and existing issues first.
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: What are you trying to achieve?
+      description: Describe your logging goal or use case
+      placeholder: "I want to set up logging for my web application that..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-setup
+    attributes:
+      label: Current Configuration
+      description: Show us your current logger setup
+      placeholder: |
+        ```python
+        # Your current logger configuration
+        ```
+      render: python
+
+  - type: textarea
+    id: issue
+    attributes:
+      label: What's not working or what questions do you have?
+      description: Describe what you're struggling with or what questions you have
+      placeholder: "I can't figure out how to... The documentation mentions... but I don't understand..."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: experience
+    attributes:
+      label: Python Logging Experience
+      description: How familiar are you with Python logging?
+      options:
+        - "Beginner - new to Python logging"
+        - "Intermediate - familiar with basic logging"
+        - "Advanced - experienced with logging frameworks"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      description: Where are you planning to use this logger?
+      options:
+        - "Local development"
+        - "Production server"
+        - "Docker container"
+        - "Cloud deployment (AWS/Azure/GCP)"
+        - "Multiple environments"
+        - "Other"
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant Logs/Output
+      description: Any error messages, logs, or output that might be helpful
+      placeholder: Paste any relevant logs or error messages here
+      render: shell
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Any other information that might help us understand your use case
+      placeholder: Application type, expected log volume, retention requirements, etc.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      description: Please confirm you've completed these steps
+      options:
+        - label: I have read the README and documentation
+          required: true
+        - label: I have searched existing issues for similar questions
+          required: true
+        - label: I have provided sufficient detail about my use case
+          required: true

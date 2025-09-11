@@ -1,0 +1,129 @@
+name: 🐛 Bug Report
+description: Report a bug or unexpected behavior in rsyslog-logger
+title: "[BUG] "
+labels: ["bug", "needs-triage"]
+assignees:
+  - Oratorian
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the information below to help us diagnose and fix the issue.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is
+      placeholder: Describe what happened and what you expected to happen
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Detailed steps to reproduce the behavior
+      placeholder: |
+        1. Configure logger with...
+        2. Call function...
+        3. See error...
+      value: |
+        ```python
+        # Paste your code here
+        ```
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What you expected to happen
+      placeholder: Describe the expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error Messages/Logs
+      description: Any error messages, tracebacks, or relevant log output
+      placeholder: Paste error messages or logs here
+      render: shell
+
+  - type: dropdown
+    id: python-version
+    attributes:
+      label: Python Version
+      description: Which Python version are you using?
+      options:
+        - "3.12"
+        - "3.11"
+        - "3.10"
+        - "3.9"
+        - "3.8"
+        - "Other (specify in additional context)"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      description: Which operating system are you using?
+      options:
+        - "Windows 10/11"
+        - "Windows Server"
+        - "Ubuntu/Debian"
+        - "CentOS/RHEL/Fedora"
+        - "macOS"
+        - "Docker Container"
+        - "Other (specify in additional context)"
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: rsyslog-logger Version
+      description: Which version of rsyslog-logger are you using?
+      placeholder: "1.0.0"
+    validations:
+      required: true
+
+  - type: textarea
+    id: configuration
+    attributes:
+      label: Logger Configuration
+      description: How did you configure the logger?
+      placeholder: |
+        ```python
+        logger = setup_logger(
+            name="myapp",
+            log_file="/var/log/app.log",
+            log_level="INFO"
+        )
+        ```
+      render: python
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Any other context about the problem (file permissions, network storage, etc.)
+      placeholder: Add any other context about the problem here
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      description: Please confirm you've completed these steps
+      options:
+        - label: I have searched existing issues to ensure this is not a duplicate
+          required: true
+        - label: I have provided all the requested information above
+          required: true
+        - label: I can reproduce this issue consistently
+          required: true
