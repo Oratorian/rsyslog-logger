@@ -10,7 +10,7 @@ authors = [
 ]
 description = "Production-ready logging with rsyslog formatting and reliable rotation"
 readme = "README.md"
-license = {text = "MIT"}
+license = "MIT"
 requires-python = ">=3.8"
 classifiers = [
     "Development Status :: 4 - Beta",
