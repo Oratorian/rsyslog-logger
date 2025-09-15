@@ -170,10 +170,112 @@ The library consists of several key components:
 
 Unlike traditional rotation methods that move files, this library uses **copy-and-truncate** rotation:
 
-✅ **Works with open file handles** (no application restart needed)  
-✅ **Windows compatible** (no file locking issues)  
-✅ **Safe for production** (no log loss during rotation)  
+✅ **Works with open file handles** (no application restart needed)
+✅ **Windows compatible** (no file locking issues)
+✅ **Safe for production** (no log loss during rotation)
 ✅ **Process-agnostic** (works regardless of file handle state)
+
+## 📡 Remote Syslog Integration
+
+### Configuring rsyslogd for Remote Logging
+
+To forward logs to a remote syslog daemon using the `omfwd` module, add the following to your `/etc/rsyslog.conf` or create a new file in `/etc/rsyslog.d/`:
+
+```bash
+# Forward all logs to remote syslog server
+*.* @@remote-syslog-server:514
+
+# Forward only specific facility/priority
+local0.* @@remote-syslog-server:514
+
+# Forward with specific format (optional)
+$ActionForwardDefaultTemplate RSYSLOG_TraditionalForwardFormat
+*.* @@remote-syslog-server:514
+```
+
+**Protocol Options:**
+- `@@` - TCP (reliable, recommended for production)
+- `@` - UDP (faster, may lose messages)
+
+### Example rsyslogd Configuration
+
+```bash
+# /etc/rsyslog.d/50-remote.conf
+
+# Load omfwd module
+$ModLoad omfwd
+
+# Forward application logs to remote server
+local0.* @@log-server.example.com:514
+
+# Optional: Forward to multiple servers
+local0.* @@primary-log-server:514
+local0.* @@backup-log-server:514
+
+# Restart rsyslogd after configuration changes
+# systemctl restart rsyslog
+```
+
+### Monitoring Log Files with imfile Module
+
+Ubuntu/Debian systems can monitor specific log files and forward them through syslog using the `imfile` module:
+
+```bash
+# /etc/rsyslog.d/60-myapp.conf
+
+# Load imfile module
+$ModLoad imfile
+
+# Monitor application log file
+$InputFileName /var/log/myapp.log
+$InputFileTag myapp:
+$InputFileStateFile stat-myapp
+$InputFileSeverity info
+$InputFileFacility local0
+$InputRunFileMonitor
+
+# Forward to remote server
+local0.* @@remote-syslog-server:514
+```
+
+After adding the configuration:
+```bash
+sudo systemctl restart rsyslog
+```
+
+### Property-Based Filtering and Routing
+
+rsyslog supports advanced filtering based on message properties like `$programname`. This is perfect for routing specific application logs:
+
+```bash
+# /etc/rsyslog.d/50-app-routing.conf
+
+# Route messages by program name to specific files
+if $programname == 'myapp' then /var/log/myapp.log
+& stop
+
+# Route by program name to remote server
+if $programname == 'critical-app' then @@remote-syslog-server:514
+if $programname == 'critical-app' then /var/log/critical-app.log
+& stop
+
+# Multiple conditions
+if $programname == 'webapp' and $msg contains 'ERROR' then {
+    @@error-server:514
+    /var/log/webapp-errors.log
+    stop
+}
+
+# Default catch-all (messages not handled above)
+*.* /var/log/syslog
+```
+
+**Key Syntax:**
+- `if $programname == 'name' then action` - Conditional routing
+- `& stop` - Stop processing, prevent further rules
+- `stop` - Modern syntax (same as `& stop`)
+- `$msg contains 'text'` - Message content filtering
+- `and`, `or` - Logical operators
 
 ## 🧪 Testing
 

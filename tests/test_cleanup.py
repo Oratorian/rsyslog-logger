@@ -9,7 +9,7 @@ import sys
 
 # Add parent directory to path to import logger
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
-from logger import cleanup_old_log_files, rotate_log_file
+from rsyslog_logger import cleanup_old_log_files, rotate_log_file
 
 
 class TestLogCleanup:

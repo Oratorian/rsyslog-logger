@@ -10,7 +10,7 @@ import sys
 
 # Add parent directory to path to import logger
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
-from logger import setup_logger, SizeRotatingFileHandler, rotate_log_file
+from rsyslog_logger import setup_logger, SizeRotatingFileHandler, rotate_log_file
 
 
 class TestLogRotation:

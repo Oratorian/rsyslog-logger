@@ -4,9 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rsyslog-logger"
-version = "1.0.0"
+version = "1.0.1"
 authors = [
-    {name = "Mahesvara", email = "oratorian@github.com"},
+    {name = "Mahesvara", email = "mahesvara@amhosting.de"},
 ]
 description = "Production-ready logging with rsyslog formatting and reliable rotation"
 readme = "README.md"
@@ -43,10 +43,10 @@ dev = [
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["logger*"]
+include = ["rsyslog_logger*"]
 
 [tool.setuptools.package-data]
-logger = ["py.typed"]
+rsyslog_logger = ["py.typed"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
