@@ -13,7 +13,7 @@ from io import StringIO
 
 # Add parent directory to path to import logger
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
-from logger import setup_logger, RsyslogFormatter, get_logger
+from rsyslog_logger import setup_logger, RsyslogFormatter, get_logger
 
 
 class TestRsyslogFormatting:
