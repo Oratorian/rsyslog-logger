@@ -14,7 +14,6 @@ import sys
 import os
 from datetime import datetime
 import glob
-import config
 
 # Global flag to ensure log rotation only happens once per application run
 _log_rotated = False
@@ -95,7 +94,7 @@ def rotate_log_file(log_file_path, force=False):
     if not force:
         try:
             file_size = os.path.getsize(log_file_path)
-            max_size = getattr(config, "LOG_MAX_SIZE", 10 * 1024 * 1024)  # Default 10MB
+            max_size = 10 * 1024 * 1024  # Default 10MB
             if file_size < max_size:
                 return  # File not large enough for rotation
         except OSError:
