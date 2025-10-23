@@ -24,17 +24,21 @@ class SizeRotatingFileHandler(logging.FileHandler):
     Custom file handler that rotates log files when they reach maximum size.
     """
 
-    def __init__(self, filename, max_size=10 * 1024 * 1024, **kwargs):
+    def __init__(self, filename, max_size=10, **kwargs):
         """
         Initialize the size-rotating file handler.
 
         Args:
             filename: Path to the log file
-            max_size: Maximum file size before rotation in bytes (default: 10MB)
+            max_size: Maximum file size in MB before rotation (default: 10MB)
             **kwargs: Additional arguments passed to FileHandler
+
+        Examples:
+            >>> handler = SizeRotatingFileHandler("app.log", max_size=5)   # 5MB
+            >>> handler = SizeRotatingFileHandler("app.log", max_size=100) # 100MB
         """
         super().__init__(filename, **kwargs)
-        self.max_size = max_size  # 10MB default
+        self.max_size = max_size * 1024 * 1024  # Convert MB to bytes
         self.baseFilename = os.path.abspath(filename)
 
     def emit(self, record):
@@ -196,6 +200,8 @@ def setup_logger(
     log_level="INFO",
     log_format="rsyslog",
     console_log_level="INFO",
+    max_size=10,
+    backup_count=5,
 ):
     """
     Setup logger with rsyslog-style formatting
@@ -206,6 +212,8 @@ def setup_logger(
         log_level: Log level string (DEBUG, INFO, WARNING, ERROR, CRITICAL)
         log_format: Log format style ("rsyslog" or "simple")
         console_log_level: Console log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+        max_size: Maximum file size in MB before rotation (default: 10MB)
+        backup_count: Number of backup files to keep (default: 5)
 
     Returns:
         Logger: Configured logger instance with rsyslog formatting and rotation
@@ -213,6 +221,7 @@ def setup_logger(
     Example:
         >>> logger = setup_logger()  # Uses defaults
         >>> logger = setup_logger("myapp", "/var/log/myapp.log", "DEBUG")
+        >>> logger = setup_logger("myapp", "/var/log/myapp.log", max_size=20, backup_count=10)
         >>> logger.info("Application started")
     """
     # Convert string level to logging constant
@@ -245,9 +254,10 @@ def setup_logger(
             global _log_rotated
             if not _log_rotated:
                 rotate_log_file(log_file, force=True)  # Force rotation on app startup
+                cleanup_old_log_files(log_file, backup_count=backup_count)
                 _log_rotated = True
 
-            file_handler = SizeRotatingFileHandler(log_file, encoding="utf-8")
+            file_handler = SizeRotatingFileHandler(log_file, max_size=max_size, encoding="utf-8")
             file_handler.setFormatter(formatter)
             logger.addHandler(file_handler)
 

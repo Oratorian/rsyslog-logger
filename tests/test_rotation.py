@@ -50,21 +50,23 @@ class TestLogRotation:
     def test_size_rotating_handler_initialization(self):
         """Test SizeRotatingFileHandler initializes correctly."""
         handler = SizeRotatingFileHandler(
-            self.test_log_file, max_size=1024  # 1KB for testing
+            self.test_log_file, max_size=1  # 1MB for testing
         )
 
-        assert handler.max_size == 1024
+        assert handler.max_size == 1 * 1024 * 1024
         assert handler.baseFilename == os.path.abspath(self.test_log_file)
 
     def test_rotation_triggers_at_size_limit(self):
         """Test that rotation occurs when file exceeds max size."""
         # Create a small log file that will trigger rotation
-        max_size = 100  # Very small for testing
+        # Use 0.0001 MB (~100 bytes) for testing
+        max_size_mb = 0.0001
+        max_size_bytes = int(max_size_mb * 1024 * 1024)
 
-        handler = SizeRotatingFileHandler(self.test_log_file, max_size=max_size)
+        handler = SizeRotatingFileHandler(self.test_log_file, max_size=max_size_mb)
 
         # Write data larger than max_size
-        test_data = "A" * (max_size + 50)
+        test_data = "A" * (max_size_bytes + 50)
         with open(self.test_log_file, "w") as f:
             f.write(test_data)
 

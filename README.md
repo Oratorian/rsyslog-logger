@@ -68,7 +68,9 @@ logger = setup_logger(
     log_file="/var/log/production.log",
     log_level="INFO",
     log_format="rsyslog",           # or "simple"
-    console_log_level="ERROR"       # Only errors to console
+    console_log_level="ERROR",      # Only errors to console
+    max_size=20,                    # Rotate at 20MB
+    backup_count=10                 # Keep 10 backup files
 )
 
 # The logger automatically handles:
@@ -129,6 +131,8 @@ except ZeroDivisionError:
 | `log_level` | str | `"INFO"` | Logging level (`DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`) |
 | `log_format` | str | `"rsyslog"` | Format style (`"rsyslog"` or `"simple"`) |
 | `console_log_level` | str | `"INFO"` | Separate log level for console output |
+| `max_size` | int/float | `10` | Maximum log file size in MB before rotation |
+| `backup_count` | int | `5` | Number of backup log files to keep |
 
 ### Log Rotation Settings
 
@@ -140,7 +144,7 @@ from rsyslog_logger import SizeRotatingFileHandler
 # Custom rotation size (5MB)
 handler = SizeRotatingFileHandler(
     "/var/log/app.log",
-    max_size=5 * 1024 * 1024  # 5MB
+    max_size=5  # 5MB
 )
 ```
 
